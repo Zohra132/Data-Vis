@@ -13,7 +13,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
       <div className="flex flex-col items-center">
         <AnimatePresence mode="popLayout">
           <motion.div
-            key={heap[index]} // safe even for duplicates
+            key={heap[index]} 
             layout
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}

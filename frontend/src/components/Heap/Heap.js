@@ -35,12 +35,12 @@ const Heap = () => {
     setHeap([...arr]);
     setInsertedIndex(index);
     await new Promise((r) => setTimeout(r, delay));
+    setInsertedIndex(null);
     
-
     while (index > 0) {
       let parentIndex = Math.floor((index - 1) / 2);
       if (compare(arr[index], arr[parentIndex])) {
-        setSwappingIndices([index, parentIndex]);
+        setSwappingIndices([parentIndex, index, ]);
         [arr[index], arr[parentIndex]] = [arr[parentIndex], arr[index]];
         setHeap([...arr]); // update visual
         await new Promise((r) => setTimeout(r, delay));
@@ -76,6 +76,7 @@ const Heap = () => {
         setHeap([...arr]); // update visual
         await new Promise((r) => setTimeout(r, delay));  
         index = swapIndex;
+        setInsertedIndex(null);
       } else break;
     }
     setSwappingIndices([]); 
@@ -149,12 +150,12 @@ const Heap = () => {
         Toggle to {heapType === "min" ? "Max Heap" : "Min Heap"}
       </button>
 
-      <div className="grid grid-cols-2 mt-5">
+      <div className="grid grid-cols-2 mt-5 gap-6">
         <HeapVisuals
           heap={heap}
           currentOperation={currentOperation}
           swappingIndices={swappingIndices}
-          insertedIndex={heap.length - 1}
+          insertedIndex={insertedIndex}
         />
         <div>
           <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
