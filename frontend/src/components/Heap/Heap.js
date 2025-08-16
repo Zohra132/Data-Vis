@@ -91,7 +91,7 @@ const Heap = () => {
     setCurrentOperation("insert");
     await heapifyUp(newHeap, setHeap, 1000); // 1-second pause
     setInput("");
-    await explainStep("insert", input, newHeap);
+    await explainStep("insert", input, heap);
   };
 
 
@@ -108,7 +108,7 @@ const Heap = () => {
     } else {
       setHeap([]);
     }
-    await explainStep("extract", root, newHeap);
+    await explainStep("extract", root, heap);
   };
 
   const handleClear = async () => {
