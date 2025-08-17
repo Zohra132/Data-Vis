@@ -86,6 +86,12 @@ const Heap = () => {
 
   const handleInsert = async () => {
     if (input === "") return;
+    if (isNaN(input)){
+      await explainStep("insert", input, heap, {
+        error: `Cannot insert "${input}" — only numeric values are allowed in the heap.`
+      });
+      return;
+    }
     const newHeap = [...heap, Number(input)];
     setHeap(newHeap);
     setCurrentOperation("insert");
