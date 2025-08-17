@@ -37,7 +37,7 @@ const LLStack = () => {
       return;
     }
     const newNode = { value: input, next: stack[0] || null };
-    const newStack = [newNode, ...stack];
+    const newStack = [...stack, newNode];
     setStack(newStack);
     setInput("");
     setCurrentOperation("push");
