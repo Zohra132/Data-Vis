@@ -158,7 +158,7 @@ const Heap = () => {
           insertedIndex={insertedIndex}
         />
         <div>
-          <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
+          <div className="grid grid-cols-2 gap-3 mb-8 min-h-[200px]">
             <AIExplanation explanation={explanation} />
             <CodeDisplay
               language={language}
@@ -180,6 +180,7 @@ const Heap = () => {
             />
           </div>
         </div>
+
       </div>
     </div>
   );

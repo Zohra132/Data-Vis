@@ -1,10 +1,12 @@
 import React from "react";
+import ZoomControls from "../ZoomControls";
 
 const StackVisuals = ({ stack, stackSize, isFixedSize, currentOperation }) => {
   return (
+    <ZoomControls>
     <div className="mt-20 flex flex-col items-center">
       {isFixedSize ? (
-        <div className="grid grid-cols-2 justify-start">
+        <div className="grid grid-cols-2 justify-start ">
           <div className="relative border-2 border-dashed border-gray-300 w-34 flex flex-col-reverse justify-start p-1 rounded-md">
             {[...Array(stackSize)].map((_, idx) => {
               const item = stack[idx];
@@ -56,6 +58,7 @@ const StackVisuals = ({ stack, stackSize, isFixedSize, currentOperation }) => {
         </div>
       )}
     </div>
+    </ZoomControls>
   );
 };
 

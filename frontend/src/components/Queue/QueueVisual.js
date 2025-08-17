@@ -1,7 +1,9 @@
 import React from "react";
+import ZoomControls from "../ZoomControls";
 
 const QueueVisual = ({ queue, queueSize, isFixedSize, itemWidth = 80 }) => {
   return (
+    <ZoomControls>
     <div className="flex justify-center my-[10%]">
       {isFixedSize ? (
         <div className="flex flex-row items-center justify-center w-full">
@@ -41,6 +43,7 @@ const QueueVisual = ({ queue, queueSize, isFixedSize, itemWidth = 80 }) => {
         </div>
       )}
     </div>
+    </ZoomControls>
   );
 };
 

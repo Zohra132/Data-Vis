@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ZoomControls from "../ZoomControls";
 
 const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex }) => {
   const renderNode = (index) => {
@@ -19,7 +20,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className={`w-12 h-12 flex items-center justify-center rounded-full border-2 font-semibold shadow ${
+            className={`w-12 h-6  lg:w-24 lg:h-12 flex items-center justify-center rounded-full border-2 font-semibold shadow ${
               swappingIndices[0] === index
               ? "bg-green-300 border-green-500" // node being moved up
               : swappingIndices[1] === index
@@ -36,6 +37,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
 
         {(left < heap.length || right < heap.length) && (
           <div className="flex justify-center gap-6 mt-2">
+            
             {renderNode(left)}
             {renderNode(right)}
           </div>
@@ -45,9 +47,10 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
   };
 
   return (
+    <ZoomControls>
     <motion.div
       layout
-      className="p-4 border rounded-lg min-h-[300px] flex justify-center items-start"
+      className="p-4 rounded-lg min-h-[300px] flex justify-center items-start"
     >
       {heap.length === 0 ? (
         <motion.p
@@ -61,6 +64,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
         renderNode(0)
       )}
     </motion.div>
+    </ZoomControls>
   );
 };
 

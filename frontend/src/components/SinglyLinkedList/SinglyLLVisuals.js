@@ -1,7 +1,9 @@
 import React from "react";
+import ZoomControls from "../ZoomControls";
 
 const SinglyLLVisual = ({ list = [], listSize, itemWidth = 80, showTail }) => {
   return (
+    <ZoomControls>
     <div className="flex justify-center my-[10%]">
       <div className="flex flex-row items-center justify-center relative">
         {list.map((item, idx) => (
@@ -89,6 +91,7 @@ const SinglyLLVisual = ({ list = [], listSize, itemWidth = 80, showTail }) => {
       </div>
       
     </div>
+    </ZoomControls>
   );
 };
 

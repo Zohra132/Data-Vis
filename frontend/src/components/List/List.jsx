@@ -11,7 +11,6 @@ const List = () => {
   const [list, setList] = useState([]);
   const [input, setInput] = useState("");
   const [explanation, setExplanation] = useState("");
-  const [isFixedSize, setIsFixedSize] = useState(true);
   const [listSize, setListSize] = useState(10);
   const [language, setLanguage] = useState("Python");
   const [codeSnippet, setCodeSnippet] = useState("");
@@ -44,10 +43,6 @@ const List = () => {
 
   const handleAddToEnd = async () => {
     if (input === "") return;
-    if (isFixedSize && list.length >= listSize) {
-      setExplanation(`List is full (max size: ${listSize})`);
-      return;
-    }
     const newList = [...list, input];
     setList(newList);
     setInput("");
@@ -91,7 +86,6 @@ const List = () => {
     await explainStep("insert", insertValue, newList, {
       insertIndex,
       listLength: newList.length,
-      maxSize: listSize,
     });
   };
   
@@ -103,7 +97,6 @@ const List = () => {
         removeIndex,
         error: "No value provided",
         listLength: list.length,
-        maxSize: listSize,
       });
       return;
     }
@@ -113,7 +106,6 @@ const List = () => {
         removeIndex,
         error: "Invalid index",
         listyLength: list.length,
-        maxSize: listSize,
       });
       return;
     }

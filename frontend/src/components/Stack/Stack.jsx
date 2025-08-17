@@ -93,7 +93,7 @@ const Stack = () => {
       <h2 className="text-center text-5xl font-semibold mb-4">Stack</h2>
       <p className="text-lg"> LIFO (Last In, First Out) principle - insertions and removals from the same end. </p>
 
-      <div className="grid grid-cols-2 mt-5"> 
+      <div className="grid grid-cols-2 gap-6 my-8"> 
 
         {/* Column 1: Stack Visual*/}
         <StackVisuals 
@@ -105,7 +105,7 @@ const Stack = () => {
 
         {/*Column 2: Exaplanation, code display and controls */}
         <div>
-          <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
+          <div className="grid grid-cols-2 gap-3 mb-3 min-h-[200px]">
             <AIExplanation 
               explanation={explanation}
             />

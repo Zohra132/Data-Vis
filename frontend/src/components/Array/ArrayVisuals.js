@@ -1,7 +1,9 @@
 import React from "react";
+import ZoomControls from "../ZoomControls";
 
 const ArrayVisual = ({ array, arraySize, itemWidth = 80 }) => {
   return (
+    <ZoomControls>
     <div className="flex justify-center my-[10%]">
         <div className="flex flex-row items-center justify-center w-full">
           <div className="relative border-2 border-dashed border-gray-300 flex flex-row p-2 rounded-md">
@@ -22,8 +24,8 @@ const ArrayVisual = ({ array, arraySize, itemWidth = 80 }) => {
             })}
           </div>
         </div>
-      
     </div>
+    </ZoomControls>
   );
 };
 

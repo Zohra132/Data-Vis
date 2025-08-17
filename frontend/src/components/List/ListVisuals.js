@@ -1,7 +1,9 @@
 import React from "react";
+import ZoomControls from "../ZoomControls";
 
 const ListVisual = ({ list, listSize, itemWidth = 80 }) => {
   return (
+    <ZoomControls>
     <div className="flex justify-center my-[10%]">
         <div className="flex flex-row items-center justify-center my">
           {list.map((item, idx) => (
@@ -15,6 +17,7 @@ const ListVisual = ({ list, listSize, itemWidth = 80 }) => {
           ))}
         </div>
     </div>
+    </ZoomControls>
   );
 };
 

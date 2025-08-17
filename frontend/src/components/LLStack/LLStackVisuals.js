@@ -1,9 +1,9 @@
 import React from "react";
-
+import ZoomControls from "../ZoomControls";
 
 const LLStackVisuals = ({ stack }) => {
   return (
-
+    <ZoomControls>
     <div className="mt-20 flex flex-col items-center">
       {stack.length === 0 ? (
         <div className="text-gray-500">Stack is empty</div>
@@ -48,7 +48,7 @@ const LLStackVisuals = ({ stack }) => {
         </div>
       )}
     </div>
-
+    </ZoomControls>
   );
 };
 
