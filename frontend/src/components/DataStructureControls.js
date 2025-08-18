@@ -19,7 +19,7 @@ const DataStructureControls = ({
 }) => {
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col items-center border-grey border-2 rounded-lg p-6 inline-block place-items-center gap-5 w-full ">
+      <div className="flex flex-col items-center border border-grey shadow-md rounded-lg p-6 inline-block place-items-center gap-5 w-full ">
         <h1 className="font-bold mb-5">Controls</h1>
         
 
