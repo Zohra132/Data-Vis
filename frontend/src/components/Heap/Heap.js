@@ -4,6 +4,7 @@ import HeapCodeSnippets from "./HeapCodeSnippets";
 import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
+import HistoryLog from "../HistoryLog";
 
 const Heap = () => {
   const [heapType, setHeapType] = useState("min");
@@ -15,7 +16,14 @@ const Heap = () => {
   const [currentOperation, setCurrentOperation] = useState(null);
   const [swappingIndices, setSwappingIndices] = useState([]);
   const [insertedIndex, setInsertedIndex] = useState(null);
+  const [history, setHistory] = useState([]);
 
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   useEffect(() => {
     if (currentOperation) {
@@ -95,6 +103,7 @@ const Heap = () => {
     const newHeap = [...heap, Number(input)];
     setHeap(newHeap);
     setCurrentOperation("insert");
+    addHistory("Insert", input);
     await heapifyUp(newHeap, setHeap, 1000); // 1-second pause
     setInput("");
     await explainStep("insert", input, heap);
@@ -106,6 +115,7 @@ const Heap = () => {
     const root = heap[0];
     const newHeap = [...heap];
     const end = newHeap.pop();
+    addHistory("Extract Root", root);
     if (newHeap.length > 0) {
       newHeap[0] = end;
       setHeap([...newHeap]);
@@ -120,6 +130,7 @@ const Heap = () => {
   const handleClear = async () => {
     setHeap([]);
     setCurrentOperation("clear");
+    addHistory("Clear");
     await explainStep("clear", null, heap);
   };
 
@@ -157,23 +168,15 @@ const Heap = () => {
       </button>
 
       <div className="grid grid-cols-2 mt-5 gap-6">
-        <HeapVisuals
-          heap={heap}
-          currentOperation={currentOperation}
-          swappingIndices={swappingIndices}
-          insertedIndex={insertedIndex}
-        />
         <div>
-          <div className="grid grid-cols-2 gap-3 mb-8 min-h-[200px]">
-            <AIExplanation explanation={explanation} />
-            <CodeDisplay
-              language={language}
-              setLanguage={setLanguage}
-              codeSnippet={codeSnippet}
-            />
-          </div>
-          <div className="flex justify-center">
-            <DataStructureControls
+          <HeapVisuals
+            heap={heap}
+            currentOperation={currentOperation}
+            swappingIndices={swappingIndices}
+            insertedIndex={insertedIndex}
+          />
+          <div className="my-3">
+            <DataStructureControls 
               input={input}
               setInput={setInput}
               onPrimaryClick={handleInsert}
@@ -184,6 +187,19 @@ const Heap = () => {
               hideSizeControl={true}
               hideFixedToggle={true}
             />
+          </div>
+        </div>
+        <div>
+          <div className="grid grid-cols-2 gap-3 mb-3 min-h-[300px]">
+            <AIExplanation explanation={explanation} />
+            <CodeDisplay
+              language={language}
+              setLanguage={setLanguage}
+              codeSnippet={codeSnippet}
+            />
+          </div>
+          <div className="h-[500px]">
+            <HistoryLog history={history}  />
           </div>
         </div>
 
