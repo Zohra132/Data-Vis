@@ -5,6 +5,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import ArrayVisual from "./ArrayVisuals";
 import Button from "../Button";
+import HistoryLog from "../HistoryLog";
 
 
 const Array = () => {
@@ -19,10 +20,15 @@ const Array = () => {
   const [insertValue, setInsertValue] = useState("");
   const [removeIndex, setRemoveIndex] = useState("");
   const [accessIndex, setAccessIndex] = useState("");
+  const [history, setHistory] = useState([]);
 
-
-
-
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
+  
   const itemWidth = Math.min(80, Math.floor(1000 / arraySize));
 
   const handleResize = (newSize) => {
@@ -51,6 +57,7 @@ const Array = () => {
     setArray(newArray);
     setInput("");
     setCurrentOperation("append");
+    addHistory("Insert at end", input);
     await explainStep("append", input, array);
   };
 
@@ -95,7 +102,7 @@ const Array = () => {
     setInput("");
     setInsertIndex("");
     setCurrentOperation("insert");
-  
+    addHistory("Insert at index", insertValue, insertIndex);
     await explainStep("insert", insertValue, newArray, {
       insertIndex,
       arrayLength: newArray.length,
@@ -103,13 +110,6 @@ const Array = () => {
     });
   };
   
-  
-
-  const handleCount = async () => {
-
-
-  };
-
   const handleRemoveAtIndex = async () => {
     if (removeIndex.trim() === "") {
       await explainStep("remove", null, array, {
@@ -135,6 +135,7 @@ const Array = () => {
     newArray.splice(removeIndex, 1);
     setArray(newArray);
     setCurrentOperation("remove");
+    addHistory("Remove at index", value, removeIndex);
     await explainStep("remove", value, array,
     {
       removeIndex,
@@ -156,6 +157,7 @@ const Array = () => {
     }
     const value = array[accessIndex];
     setCurrentOperation("access");
+    addHistory("Access at index", value, accessIndex);
     await explainStep("access", accessIndex, array);
     return;
   };
@@ -163,6 +165,7 @@ const Array = () => {
   const handleClear = async () => {
     setArray([]);
     setCurrentOperation("clear");
+    addHistory("Clear array");
     await explainStep("clear", null, array
     );
   };
@@ -238,6 +241,7 @@ const Array = () => {
                 codeSnippet={codeSnippet}
             />
           </div>
+          <div className="grid grid-cols-2 gap-3"> 
           <DataStructureControls
             input={input}
             setInput={setInput}
@@ -297,7 +301,11 @@ const Array = () => {
                 ),
               }
             ]}
-          />    
+          /> 
+          <HistoryLog history={history} />
+
+
+          </div>   
         </div>
       </div>
     </div>
