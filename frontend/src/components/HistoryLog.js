@@ -2,7 +2,7 @@ import React from "react";
 
 const HistoryLog = ({ history }) => {
   return (
-    <div className="border rounded-lg bg-white shadow-md p-3 text-left max-h-60 overflow-y-auto">
+    <div className="border rounded-lg bg-white shadow-md p-3 text-left h-full overflow-y-auto">
       <h3 className="text-lg font-semibold mb-2">Operation History</h3>
       {history.length === 0 ? (
         <p className="text-gray-500 italic">No operations yet.</p>
