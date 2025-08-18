@@ -2,7 +2,7 @@ import React from "react";
 
 const CodeDisplay = ({ language, setLanguage, codeSnippet }) => {
   return (
-    <div className="bg-gray-100 rounded-xl">
+    <div className="border border-grey shadow-md bg-gray-100 rounded-xl">
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value)}
