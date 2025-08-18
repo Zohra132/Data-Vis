@@ -5,6 +5,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import SinglyLLVisual from "./SinglyLLVisuals";
 import Button from "../Button";
+import HistoryLog from "../HistoryLog";
 
 
 const SinglyLinkedList = () => {
@@ -22,9 +23,7 @@ const SinglyLinkedList = () => {
   const [removeIndex, setRemoveIndex] = useState("");
   const [removeFrontValue, setRemoveFrontValue] = useState("");
   const [showTail, setShowTail] = useState(false);
-
-
-
+  const [history, setHistory] = useState([]);
 
   const itemWidth = Math.min(80, Math.floor(1000 / listSize));
 
@@ -36,6 +35,13 @@ const SinglyLinkedList = () => {
     }
   };
 */}
+
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   useEffect(() => {
     if (currentOperation) {
@@ -52,6 +58,7 @@ const SinglyLinkedList = () => {
     setList(newList);
     setInput("");
     setCurrentOperation("append");
+    addHistory("Insert at end", input);
     await explainStep("append", input, list);
   };
 
@@ -61,6 +68,7 @@ const SinglyLinkedList = () => {
     setList(newList);
     setInput("");
     setCurrentOperation("append");
+    addHistory("Insert at front", insertFrontValue);
     await explainStep("append", insertFrontValue, list);
   };
   
@@ -91,7 +99,7 @@ const SinglyLinkedList = () => {
     setInput("");
     setInsertIndex("");
     setCurrentOperation("insert");
-  
+    addHistory("Insert at index", insertValue, insertIndex);
     await explainStep("insert", insertValue, newList, {
       insertIndex,
       listLength: newList.length,
@@ -100,17 +108,24 @@ const SinglyLinkedList = () => {
   };
 
   const handleRemoveEnd = async () => {
+    if (list.length === 0) return; 
+    const endValue = list[list.length - 1]; 
+    setRemoveEndValue(endValue);
     const newList = list.slice(0, -1);
     setList(newList);
     setCurrentOperation("remove");
+    addHistory("Remove End", removeEndValue);
     await explainStep("remove", removeEndValue, list);
   }
 
   const handleRemoveFront = async () => {
+    if (list.length === 0) return; 
+    const frontValue = list[0];
     const newList = list.slice(1);
     setList(newList);
     setCurrentOperation("remove");
-    await explainStep("remove", removeFrontValue, list);
+    addHistory("Remove Front", frontValue);
+    await explainStep("remove", frontValue, list);
   }
 
   const handleRemoveIndex = async () => {
@@ -137,6 +152,7 @@ const SinglyLinkedList = () => {
     newList.splice(removeIndex, 1);
     setList(newList);
     setCurrentOperation("remove");
+    addHistory("Remove at index", value, removeIndex);
     await explainStep("remove", value, list);
   }
 
@@ -189,6 +205,7 @@ const SinglyLinkedList = () => {
                 codeSnippet={codeSnippet}
             />
           </div>
+          <div className="grid grid-cols-2 gap-3">
           <DataStructureControls
             input={input}
             setInput={setInput}
@@ -278,6 +295,8 @@ const SinglyLinkedList = () => {
               }
             ]}
           />    
+          <HistoryLog history={history} />
+        </div>
         </div>
       </div>
     </div>
