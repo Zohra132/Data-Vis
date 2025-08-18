@@ -4,6 +4,7 @@ import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import StackVisuals from "./StackVisuals";
+import HistoryLog from "../HistoryLog";
 
 
 const Stack = () => {
@@ -16,6 +17,14 @@ const Stack = () => {
   const [language, setLanguage] = useState("Python");
   const [codeSnippet, setCodeSnippet] = useState("");
   const [currentOperation, setCurrentOperation] = useState(null);
+  const [history, setHistory] = useState([]);
+
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   const handleResize = (newSize) => {
     setStackSize(newSize);
@@ -41,6 +50,7 @@ const Stack = () => {
     }
     const newStack = [...stack, input];
     setStack(newStack);
+    addHistory("Push", input);
     setInput("");
     setCurrentOperation("push");
     await explainStep("push", input, stack);
@@ -51,12 +61,14 @@ const Stack = () => {
     const popped = stack[stack.length - 1];
     const newStack = stack.slice(0, -1);
     setStack(newStack);
+    addHistory("Pop", popped);
     setCurrentOperation("pop");
     await explainStep("pop", popped, stack);
   };
 
   const handleClear = async () => {
     setStack([]);
+    addHistory("Clear");
     setCurrentOperation("clear");
     await explainStep("clear", null, stack);
   };
@@ -68,6 +80,7 @@ const Stack = () => {
       setCurrentOperation("top");
     } else {
       const topValue = stack[stack.length - 1];
+      addHistory("Peek", topValue);
       setCurrentOperation("top"); 
       await explainStep("top", topValue, stack);
     }
@@ -103,7 +116,7 @@ const Stack = () => {
           currentOperation={currentOperation}
         />
 
-        {/*Column 2: Exaplanation, code display and controls */}
+        {/*Column 2: Exaplanation, code displa, controls and operation history */}
         <div>
           <div className="grid grid-cols-2 gap-3 mb-3 min-h-[200px]">
             <AIExplanation 
@@ -115,7 +128,7 @@ const Stack = () => {
               codeSnippet={codeSnippet}
             />
           </div>
-          <div className="flex justify-center">
+          <div>
             <DataStructureControls
               input={input}
               setInput={setInput}
@@ -130,6 +143,9 @@ const Stack = () => {
               size={stackSize}
               onResize={handleResize}
             />  
+          </div>
+          <div className="my-3">
+            <HistoryLog history={history} />
           </div>
         </div>
       </div>
