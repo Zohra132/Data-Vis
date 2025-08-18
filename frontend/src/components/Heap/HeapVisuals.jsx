@@ -68,7 +68,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
     <ZoomControls>
       <div 
         ref={containerRef} 
-        className="relative p-4 rounded-lg min-h-[300px] flex justify-center items-start"
+        className="relative p-4 rounded-lg min-h-[500px] flex justify-center items-start"
       >
 
       <div className="relative z-10 w-full flex justify-center">
