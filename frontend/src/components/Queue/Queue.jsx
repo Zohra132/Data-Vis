@@ -4,6 +4,7 @@ import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import QueueVisual from "./QueueVisual";
 import DataStructureControls from "../DataStructureControls"; 
+import HistoryLog from "../HistoryLog";
 
 
 const Queue = () => {
@@ -15,8 +16,16 @@ const Queue = () => {
   const [language, setLanguage] = useState("Python");
   const [codeSnippet, setCodeSnippet] = useState("");
   const [currentOperation, setCurrentOperation] = useState(null);
+  const [history, setHistory] = useState([]);
 
   const itemWidth = Math.min(80, Math.floor(1000 / queueSize));
+
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   useEffect(() => {
     if (currentOperation) {
@@ -34,6 +43,7 @@ const Queue = () => {
     }
     const newQueue = [...queue, input];
     setQueue(newQueue);
+    addHistory("Enqueue", input);
     setInput("");
     setCurrentOperation("enqueue");
     await explainStep("enqueue", input, queue);
@@ -47,6 +57,7 @@ const Queue = () => {
     const dequeued = queue[0];
     const newQueue = queue.slice(1);
     setQueue(newQueue);
+    addHistory("Dequeue", dequeued);
     setCurrentOperation("dequeue");
     await explainStep("dequeue", dequeued, queue);
   };
@@ -58,18 +69,21 @@ const Queue = () => {
       return;
     }
     const front = queue[0];
+    addHistory("Peek", front);
     setCurrentOperation("peek");
     await explainStep("peek", front, queue);
   };
 
   const handleClear = async () => {
     setQueue([]);
+    addHistory("Clear");
     setCurrentOperation("clear");
     await explainStep("clear", null, queue);
   };
 
   const handleResize = async (newSize) => {
     setQueueSize(newSize);
+    addHistory("Resize");
     setCurrentOperation("resize");
     await explainStep("resize", newSize, queue);
   };
@@ -117,20 +131,23 @@ const Queue = () => {
                 codeSnippet={codeSnippet}
             />
           </div>
-          <DataStructureControls
-            input={input}
-            setInput={setInput}
-            onPrimaryClick={handleEnqueue}
-            primaryLabel="Enqueue"
-            onSecondaryClick={handleDequeue}
-            secondaryLabel="Dequeue"
-            onClearClick={handleClear}
-            onPeekClick={handlePeek}
-            isFixedSize={isFixedSize}
-            setIsFixedSize={setIsFixedSize}
-            size={queueSize}        
-            onResize={handleResize}
-          />    
+          <div className="grid grid-cols-2 gap-3 ">
+            <DataStructureControls
+              input={input}
+              setInput={setInput}
+              onPrimaryClick={handleEnqueue}
+              primaryLabel="Enqueue"
+              onSecondaryClick={handleDequeue}
+              secondaryLabel="Dequeue"
+              onClearClick={handleClear}
+              onPeekClick={handlePeek}
+              isFixedSize={isFixedSize}
+              setIsFixedSize={setIsFixedSize}
+              size={queueSize}        
+              onResize={handleResize}
+            />    
+            <HistoryLog history={history} />
+          </div>
         </div>
       </div>
     </div>
