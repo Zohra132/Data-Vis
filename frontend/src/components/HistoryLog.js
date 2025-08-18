@@ -8,7 +8,10 @@ const HistoryLog = ({ history }) => {
         <p className="text-gray-500 italic">No operations yet.</p>
       ) : (
         <ul className="space-y-1 text-sm">
-          {history.map((item, idx) => (
+          {history
+          .slice()
+          .reverse()
+          .map((item, idx) => (
             <li key={idx} className="border-b pb-1">
               <span className="font-bold">{item.action}</span>
               {item.value !== undefined && item.value !== null && (
