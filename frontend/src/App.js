@@ -9,7 +9,8 @@ import Array  from "./components/Array/Array";
 import SinglyLinkedList from "./components/SinglyLinkedList/SinglyLinkedList";
 import List  from "./components/List/List";
 import Heap  from "./components/Heap/Heap";
-import HashMap  from "./components/HashMap/HashMap";
+import BST from "./components/BST/BST";
+import BubbleSort from "./components/BubbleSort/BubbleSort";
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
         <Route path="/SinglyLinkedList" element={<SinglyLinkedList />} />
         <Route path="/List" element={<List />} />
         <Route path="/Heap" element={<Heap />} />
-        <Route path="/HashMap" element={<HashMap />} />
+        <Route path="/BinarySearchTree" element={<BST />} />
+        <Route path="/BubbleSort" element={<BubbleSort/>} />
       </Routes>
     </Router>
   );

@@ -50,23 +50,24 @@ function Home() {
         <div className="flex flex-col items-center px-6">
         <h1 className="text-4xl font-bold text-white justify-start ml-10 mb-8">Data Structures</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
-            <PurpleButton to="/Array">Array COMPLETED</PurpleButton>
-            <PurpleButton to="/SinglyLinkedList">Singly Linked List COMPLETED</PurpleButton>
+            <PurpleButton to="/Array">Array</PurpleButton>
+            <PurpleButton to="/Queue">Queue</PurpleButton>
+            <PurpleButton to="/Stack">Stack</PurpleButton>
+            <PurpleButton to="/LLStack">Stack (Linked List)</PurpleButton>
+            <PurpleButton to="/List">List</PurpleButton>
+            <PurpleButton to="/SinglyLinkedList">Singly Linked List</PurpleButton>
             <PurpleButton to="/Heap">Heap</PurpleButton>
-            <PurpleButton to="/HashMap">HashMap</PurpleButton>
-            <PurpleButton to="/Tree">Tree</PurpleButton>
+            <PurpleButton to="/BinarySearchTree">Binary Search Tree</PurpleButton>
           </div> 
         </div>
 
         <div className="flex flex-col items-center justify-center px-6 mt-40">
-          <h1 className="text-4xl font-bold text-white mb-8">Abstract Data Structures</h1>
+          <h1 className="text-4xl font-bold text-white mb-8">Sorting Algorithms</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <PurpleButton to="/Stack">Stack COMPLETED </PurpleButton>
-            <PurpleButton to="/LLStack">Stack (Linked List) COMPLETED </PurpleButton>
-            <PurpleButton to="/Queue">Queue COMPLETED</PurpleButton>
-            <PurpleButton to="/List">List COMPLETED</PurpleButton>
+            <PurpleButton to="/BubbleSort">Bubble Sort</PurpleButton>
           </div>
         </div>
+
 
     </div>
 
