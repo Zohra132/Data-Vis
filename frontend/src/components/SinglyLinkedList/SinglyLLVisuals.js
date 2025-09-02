@@ -5,7 +5,7 @@ const SinglyLLVisual = ({ list = [], listSize, itemWidth = 80, showTail }) => {
   return (
     <ZoomControls>
     <div className="flex justify-center my-[10%]">
-      <div className="flex flex-row items-center justify-center relative">
+      <div className="flex flex-row items-center justify-center relative ">
         {list.map((item, idx) => (
           <React.Fragment key={idx}>
             <div className="relative flex flex-col items-center mr-1">
@@ -38,9 +38,9 @@ const SinglyLLVisual = ({ list = [], listSize, itemWidth = 80, showTail }) => {
               <div className="flex flex-row">
                 <div className="w-20 h-10 p-2 border-2 border-gray-700 bg-green-100 flex items-center justify-center relative">
                   <span className="absolute top-0 left-1 text-xs text-gray-500 px-1">#{idx}</span>
-                  <span className="text-base font-bold">{item}</span>
+                  <span className="text-black font-bold">{item}</span>
                 </div>
-                <div className="w-8 h-10 p-2 border-2 border-l-0 border-gray-700 bg-green-100 flex items-center justify-center relative">
+                <div className="w-8 h-10 p-2 border-2 border-l-0 border-gray-700 bg-green-100 flex items-center justify-center relative text-black">
                   {idx == list.length - 1 && (
                     <div className="text-xs justify-center">null</div>
                   )}

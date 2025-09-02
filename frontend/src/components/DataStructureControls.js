@@ -18,9 +18,9 @@ const DataStructureControls = ({
   showSizeControls = true,
 }) => {
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col items-center border border-grey shadow-md rounded-lg p-6 inline-block place-items-center gap-5 w-full ">
-        <h1 className="font-bold mb-5">Controls</h1>
+    <div className="flex justify-center border border-black rounded-lg bg-black/25 h-full">
+      <div className="flex flex-col items-center shadow-md p-6 inline-block place-items-center gap-5 w-full">
+        <h1 className="font-bold mb-5 text-white">Controls</h1>
         
 
          <div className="flex justify-center gap-2">
@@ -29,7 +29,7 @@ const DataStructureControls = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder=" Enter value"
-            className="border border-grey rounded w-30"
+            className="border border-grey-600 rounded w-30 text-black"
           />
           <div className="flex justify-end">
             <Button onClick={onPrimaryClick}>{primaryLabel}</Button>
@@ -43,7 +43,7 @@ const DataStructureControls = ({
 
 
         {extraButtons?.map((btn, idx) => (
-          <div key={idx}>
+          <div key={idx} className="text-black">
             {btn.element ? btn.element : (
               <Button onClick={btn.onClick}>{btn.label}</Button>
             )}

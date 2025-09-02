@@ -26,18 +26,26 @@ const ZoomControls = ({ children }) => {
   }, []);
 
 
+const ControlButton = ({onClick, children}) => {
   return (
-    <div className="relative w-full border rounded-lg overflow-hidden">
-      <div className="absolute top-2 right-2 flex gap-2 z-10">
-        <button onClick={zoomIn} className="px-2 py-1 bg-gray-200 rounded shadow">
-          +
-        </button>
-        <button onClick={zoomOut} className="px-2 py-1 bg-gray-200 rounded shadow">
-          -
-        </button>
-        <button onClick={resetZoom} className="px-2 py-1 bg-gray-200 rounded shadow">
-          Reset
-        </button>
+    <button
+        onClick={onClick}
+        className="px-2 py-1 bg-gray-300 rounded shadow text-black 
+        hover:-translate-y-1
+        hover:[box-shadow:_0_0_10px_#236FE8,_0_0_20px_#236FE8]"
+    >
+        {children}
+    </button>
+  );
+};
+
+
+  return (
+    <div className="relative w-full bg-black/15 border rounded-lg border-black overflow-hidden">
+      <div className="absolute top-2 right-2 flex gap-2 z-10 ">
+        <ControlButton onClick={zoomIn}> + </ControlButton>
+        <ControlButton onClick={zoomOut}> - </ControlButton>
+        <ControlButton onClick={resetZoom}>Reset</ControlButton>
       </div>
 
       {/* Zoomable + pannable diagram */}

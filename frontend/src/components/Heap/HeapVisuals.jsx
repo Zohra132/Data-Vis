@@ -39,7 +39,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className={`w-12 h-6 lg:w-24 lg:h-12 flex items-center justify-center rounded-full border-2 font-semibold shadow
+            className={`w-12 h-6 lg:w-24 lg:h-12 flex items-center justify-center rounded-full border-2 font-semibold shadow text-black
               ${
                 swappingIndices[0] === index
                   ? "bg-green-300 border-green-500"

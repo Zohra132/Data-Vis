@@ -8,7 +8,7 @@ const LLStackVisuals = ({ stack }) => {
       {stack.length === 0 ? (
         <div className="text-gray-500">Stack is empty</div>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center text-black">
           {stack
             .slice()
             .reverse()

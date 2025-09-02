@@ -20,7 +20,7 @@ const BubbleSortVisuals = ({ array, currentIndices, sortedBoundary }) => {
               scale: isComparing ? 1.2 : 1,
             }}
             transition={{ duration: 0.3 }}
-            className="w-12 h-12 flex items-center justify-center rounded-md border-2 border-gray-400 shadow font-semibold"
+            className="w-12 h-12 flex items-center justify-center rounded-md border-2 border-gray-400 shadow font-semibold text-black"
           >
             {value}
           </motion.div>

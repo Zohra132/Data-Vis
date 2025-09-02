@@ -5,7 +5,7 @@ const ListVisual = ({ list, listSize, itemWidth = 80 }) => {
   return (
     <ZoomControls>
     <div className="flex justify-center my-[10%]">
-        <div className="flex flex-row items-center justify-center my">
+        <div className="flex flex-row items-center justify-center text-black">
           {list.map((item, idx) => (
             <div
               key={idx}
