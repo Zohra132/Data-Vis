@@ -5,6 +5,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import StackVisuals from "./StackVisuals";
 import HistoryLog from "../HistoryLog";
+import { explain } from "../../utils/api";
 
 
 const Stack = () => {
@@ -86,6 +87,7 @@ const Stack = () => {
     }
   };
 
+  /*
   const explainStep = async (action, value, updatedStack) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -99,6 +101,27 @@ const Stack = () => {
 
     const data = await response.json();
     setExplanation(data.explanation);
+  };*/
+
+  const explainStep = async (action, value, updatedStack, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedStack,
+            ...extra,
+          },
+        ], // steps
+        "stack",      // structure
+        updatedStack // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
   return (

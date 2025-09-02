@@ -4,6 +4,7 @@ import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import LLStackVisuals from "./LLStackVisuals";
+import { explain } from "../../utils/api";
 
 const LLStack = () => {
   const [stack, setStack] = useState([]); // Representing linked list stack as array of nodes for simplicity
@@ -65,6 +66,7 @@ const LLStack = () => {
     await explainStep("top", topNode?.value ?? null, stack);
   };
 
+  /*
   const explainStep = async (action, value, updatedStack) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -78,6 +80,27 @@ const LLStack = () => {
 
     const data = await response.json();
     setExplanation(data.explanation);
+  };*/
+
+  const explainStep = async (action, value, updatedStack, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedStack,
+            ...extra,
+          },
+        ], // steps
+        "stack",      // structure
+        updatedStack  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
   return (
@@ -85,7 +108,7 @@ const LLStack = () => {
       <h2 className="text-center text-5xl font-semibold mb-4">Stack - Linked List Implementation</h2>
       <p className="text-lg">LIFO (Last In, First Out) principle - insertions and removals from the same end.</p>
 
-      <div className="grid grid-cols-2 mt-5">
+      <div className="grid grid-cols-2 mt-5 gap-6">
         {/* Column 1: Stack Visual */}
         <LLStackVisuals stack={stack} />
 

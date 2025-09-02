@@ -6,6 +6,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import Button from "../Button";
 import HistoryLog from "../HistoryLog";
+import { explain } from "../../utils/api";
 import {
   preorderTraversal,
   inorderTraversal,
@@ -156,20 +157,25 @@ const BST = () => {
     await explainStep("clear", null, {});
   };
 
-  // AI explanation
-  const explainStep = async (action, value, updatedRoot) => {
-    const response = await fetch("http://localhost:3001/explain", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        steps: [{ action, value }],
-        structure: "binary search tree",
-        currentState: updatedRoot,
-      }),
-    });
-
-    const data = await response.json();
-    setExplanation(data.explanation);
+  const explainStep = async (action, value, updatedRoot, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedRoot,
+            ...extra,
+          },
+        ], 
+        "binary search tree",      // structure
+        updatedRoot  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
 
@@ -206,7 +212,7 @@ const BST = () => {
                 {
                   element: (
                     <div className="flex flex-col gap-4 items-center mb-2 ">
-                      <p className="font-bold">Traversals: </p>
+                      <p className="font-bold text-white">Traversals: </p>
                       <Button onClick={() => runTraversal("preorder")}>Preorder</Button>
                       <Button onClick={() => runTraversal("inorder")}>Inorder</Button>
                       <Button onClick={() => runTraversal("postorder")}>Postorder</Button>
@@ -232,7 +238,7 @@ const BST = () => {
             <HistoryLog history={history} />
                       {/* Traversal Output */}
           {traversalResult.length > 0 && (
-            <div className="mt-3 p-3 border rounded bg-gray-50">
+            <div className="mt-3 p-3 border border-black rounded-lg bg-black/25">
               <p className="font-semibold mb-1">{traversalType} Traversal</p>
               <p className="font-mono">{traversalResult.join(" → ")}</p>
             </div>

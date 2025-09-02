@@ -6,7 +6,7 @@ import DataStructureControls from "../DataStructureControls";
 import SinglyLLVisual from "./SinglyLLVisuals";
 import Button from "../Button";
 import HistoryLog from "../HistoryLog";
-
+import { explain } from "../../utils/api";
 
 const SinglyLinkedList = () => {
   const [list, setList] = useState([]);
@@ -156,8 +156,7 @@ const SinglyLinkedList = () => {
     await explainStep("remove", value, list);
   }
 
-
-
+/*
   const explainStep = async (action, value, updatedList, extra = {}) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -173,6 +172,27 @@ const SinglyLinkedList = () => {
   
     const data = await response.json();
     setExplanation(data.explanation);
+  };*/
+
+  const explainStep = async (action, value, updatedList, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedList,
+            ...extra,
+          },
+        ], // steps
+        "list",      // structure
+        updatedList  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
 

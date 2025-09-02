@@ -5,7 +5,7 @@ import CodeDisplay from "../CodeDisplay";
 import QueueVisual from "./QueueVisual";
 import DataStructureControls from "../DataStructureControls"; 
 import HistoryLog from "../HistoryLog";
-
+import { explain } from "../../utils/api";
 
 const Queue = () => {
   const [queue, setQueue] = useState([]);
@@ -88,6 +88,7 @@ const Queue = () => {
     await explainStep("resize", newSize, queue);
   };
 
+  /*
   const explainStep = async (action, value, updatedQueue) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -101,6 +102,27 @@ const Queue = () => {
 
     const data = await response.json();
     setExplanation(data.explanation);
+  };*/
+
+  const explainStep = async (action, value, updatedQueue, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedQueue,
+            ...extra,
+          },
+        ], // steps
+        "queue",      // structure
+        updatedQueue  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
   return (

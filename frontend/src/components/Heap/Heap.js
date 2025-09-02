@@ -5,6 +5,7 @@ import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import HistoryLog from "../HistoryLog";
+import { explain } from "../../utils/api";
 
 const Heap = () => {
   const [heapType, setHeapType] = useState("min");
@@ -134,6 +135,7 @@ const Heap = () => {
     await explainStep("clear", null, heap);
   };
 
+  /*
   const explainStep = async (action, value, updatedHeap) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -147,6 +149,27 @@ const Heap = () => {
 
     const data = await response.json();
     setExplanation(data.explanation);
+  };*/
+
+  const explainStep = async (action, value, updatedHeap, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedHeap,
+            ...extra,
+          },
+        ], // steps
+        `${heapType} heap`,      // structure
+        updatedHeap  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
   };
 
   return (

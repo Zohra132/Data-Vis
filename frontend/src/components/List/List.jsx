@@ -5,6 +5,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import ListVisual from "./ListVisuals";
 import Button from "../Button";
+import { explain } from "../../utils/api";
 
 
 const List = () => {
@@ -83,7 +84,7 @@ const List = () => {
     setInsertIndex("");
     setCurrentOperation("insert");
   
-    await explainStep("insert", insertValue, newList, {
+    await explainStep("insert", insertValue, list, {
       insertIndex,
       listLength: newList.length,
     });
@@ -146,7 +147,7 @@ const List = () => {
     );
   };
 
-
+/*
   const explainStep = async (action, value, updatedList, extra = {}) => {
     const response = await fetch("http://localhost:3001/explain", {
       method: "POST",
@@ -163,7 +164,29 @@ const List = () => {
     const data = await response.json();
     setExplanation(data.explanation);
   };
-  
+  */
+
+
+  const explainStep = async (action, value, updatedList, extra = {}) => {
+    try {
+      const data = await explain(
+        [
+          {
+            action,
+            value,
+            updatedList,
+            ...extra,
+          },
+        ], // steps
+        "list",      // structure
+        updatedList,  // currentState
+      );
+      setExplanation(data.explanation);
+    } catch (error) {
+      console.error("Failed to get AI explanation:", error);
+      setExplanation("Failed to fetch explanation.");
+    }
+  };
 
   return (
     <div className="text-center my-8 mx-12 min-w-[700px]">
