@@ -8,7 +8,7 @@ const QueueVisual = ({ queue, queueSize, isFixedSize, itemWidth = 80 }) => {
       {isFixedSize ? (
         <div className="flex flex-row items-center justify-center w-full">
           <div className="text-sm font-semibold mr-3 mt-4">Front</div>
-          <div className="relative border-2 border-dashed border-gray-300 flex flex-row p-2 rounded-md">
+          <div className="relative border-2 border-dashed border-gray-300 flex flex-row p-2 rounded-md text-black">
             {[...Array(queueSize)].map((_, idx) => {
               const item = queue[idx];
               return (
@@ -28,7 +28,7 @@ const QueueVisual = ({ queue, queueSize, isFixedSize, itemWidth = 80 }) => {
           <div className="text-sm font-semibold ml-3 mt-4">Rear</div>
         </div>
       ) : (
-        <div className="flex flex-row items-center justify-center my">
+        <div className="flex flex-row items-center justify-center my text-black">
           {queue.map((item, idx) => (
             <div
               key={idx}
