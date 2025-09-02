@@ -73,7 +73,7 @@ const BubbleSort = () => {
           placeholder="Insert values separated with commas"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="border w-1/2 border-grey rounded px-2 py-3"
+          className="border w-1/2 border-grey rounded px-2 py-3 text-black"
         />
         <div className="space-y-4 mt-6">
           {sortedRows.map((row, i) => (
