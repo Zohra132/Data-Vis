@@ -10,6 +10,7 @@ import List  from "./components/List/List";
 import Heap  from "./components/Heap/Heap";
 import BST from "./components/BST/BST";
 import BubbleSort from "./components/BubbleSort/BubbleSort";
+import QuickSort from "./components/QuickSort/QuickSort";
 import AuthForm from "./components/Navbar/AuthForm";
 import Account from "./components/Account/Account";
 import { AuthProvider, AuthContext  } from "./context/AuthContext";
@@ -29,6 +30,7 @@ function AppRoutes() {
       <Route path="/Heap" element={<Heap />} />
       <Route path="/BinarySearchTree" element={<BST />} />
       <Route path="/BubbleSort" element={<BubbleSort/>} />
+      <Route path="/QuickSort" element={<QuickSort/>} />
       <Route path="/AuthForm" element={<AuthForm/>} />
       <Route 
         path="/Account" 
