@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HomeIcon } from '@heroicons/react/24/outline';
 import "./Home.css";
-import DatasetManager from "./DatasetManager";
+/*import DatasetManager from "./DatasetManager";*/
 import Navbar from "./Navbar/Navbar";
 
 const PurpleButton = ({to, children}) => {
