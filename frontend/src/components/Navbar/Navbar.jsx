@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext.jsx";
+/*import { AuthContext } from "../../context/AuthContext.jsx"; */
 
+/*
 const LoginRegisterButton = () => {
   const navigate = useNavigate();
   const { user} = useContext(AuthContext);
@@ -24,14 +25,15 @@ const LoginRegisterButton = () => {
     </button>
   );
 };
+*/
 
 const Navbar = () => {
   return (
     <div className="sticky top-0 h-[100px] flex items-center justify-between px-6 bg-black text-white shadow-md">
       <h1 className="text-2xl font-mono font-bold">
-        DataVis
+        DSA Visualiser
       </h1>
-      <LoginRegisterButton />
+      {/* <LoginRegisterButton /> */}
     </div>
   );
 };

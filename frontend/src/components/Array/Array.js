@@ -244,7 +244,6 @@ const Array = () => {
           itemWidth={itemWidth}
         />
 
-        {/*  Exaplanation, code display and controls*/}
         <div className="grid grid-cols-2 gap-6 my-8">
           {/*
           <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
@@ -257,6 +256,8 @@ const Array = () => {
                 codeSnippet={codeSnippet}
             />
           </div>*/}
+
+
           {/* col 1 */}
             <div>
               <SlidingTabs
@@ -266,7 +267,7 @@ const Array = () => {
               />
             
 
-              <div className="min-h-[400px] border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+              <div className="h-full border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
                 {activeView === "explanation" && <AIExplanation explanation={explanation} />}
                 {activeView === "code" && (
                 <CodeDisplay

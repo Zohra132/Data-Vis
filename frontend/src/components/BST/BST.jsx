@@ -7,6 +7,7 @@ import DataStructureControls from "../DataStructureControls";
 import Button from "../Button";
 import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 import {
   preorderTraversal,
   inorderTraversal,
@@ -33,6 +34,7 @@ const BST = () => {
   const [traversalResult, setTraversalResult] = useState([]);
   const [traversalType, setTraversalType] = useState(null);
   const [traversalOrder, setTraversalOrder] = useState(null);
+  const [activeView, setActiveView] = useState("explanation");
 
   const addHistory = (action, value = null) => {
     setHistory((prev) => [...prev, { action, value }]);
@@ -178,6 +180,11 @@ const BST = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
 
   return (
     <div className="text-center my-8 mx-12 min-w-[700px]">
@@ -188,62 +195,61 @@ const BST = () => {
         Left subtree &lt; node &lt; right subtree. Try insert/search/delete and run traversals.
       </p>
 
-      <div className="grid grid-cols-2 mt-5 gap-6">
+      <div className="grid grid-cols-[1fr_1fr_1fr] gap-6 my-8"> 
+        {/* Column 1 */}
+        <div className="w-full">
+          <SlidingTabs
+            tabs={tabs}
+            activeTab={activeView}
+            onChange={setActiveView}
+          />
+
+          <div className="h-[630px] border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+            {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+            {activeView === "code" && (
+            <CodeDisplay
+              language={language}
+              setLanguage={setLanguage}
+              codeSnippet={codeSnippet}
+            />
+            )}
+            {activeView === "history" && <HistoryLog history={history} />}
+          </div>
+        </div>
+
+        {/* Column 2 */}
         <div>
           <BSTVisuals 
             root={root} 
             currentOperation={currentOperation} 
             traversalOrder={traversalOrder}
           />
-
-          <div className="my-3">
-            <DataStructureControls
-              input={input}
-              setInput={setInput}
-              onPrimaryClick={handleInsert}
-              primaryLabel="Insert"
-              onSecondaryClick={handleSearch}
-              secondaryLabel="Search"
-              onClearClick={handleClear}
-              extraButtons={[{ label: "Delete", onClick: handleDelete }]}
-              hideSizeControl={true}
-              hideFixedToggle={true}
-              extraButtons={[
-                {
-                  element: (
-                    <div className="flex flex-col gap-4 items-center mb-2 ">
-                      <p className="font-bold text-white">Traversals: </p>
-                      <Button onClick={() => runTraversal("preorder")}>Preorder</Button>
-                      <Button onClick={() => runTraversal("inorder")}>Inorder</Button>
-                      <Button onClick={() => runTraversal("postorder")}>Postorder</Button>
-                    </div>
-                  )}
-                ]}
-            />
-          </div>
-
-
         </div>
 
         <div>
-          <div className="grid grid-cols-2 gap-3 mb-3 min-h-[300px]">
-            <AIExplanation explanation={explanation} />
-            <CodeDisplay
-              language={language}
-              setLanguage={setLanguage}
-              codeSnippet={codeSnippet}
-            />
-          </div>
-          <div className="h-[350px]">
-            <HistoryLog history={history} />
-                      {/* Traversal Output */}
-          {traversalResult.length > 0 && (
-            <div className="mt-3 p-3 border border-black rounded-lg bg-black/25">
-              <p className="font-semibold mb-1">{traversalType} Traversal</p>
-              <p className="font-mono">{traversalResult.join(" → ")}</p>
-            </div>
-          )}
-          </div>
+          <DataStructureControls
+            input={input}
+            setInput={setInput}
+            onPrimaryClick={handleInsert}
+            primaryLabel="Insert"
+            onSecondaryClick={handleSearch}
+            secondaryLabel="Search"
+            onClearClick={handleClear}
+            extraButtons={[{ label: "Delete", onClick: handleDelete }]}
+            hideSizeControl={true}
+            hideFixedToggle={true}
+            extraButtons={[
+              {
+                element: (
+                  <div className="flex flex-col gap-4 items-center mb-2 ">
+                    <p className="font-bold text-white">Traversals: </p>
+                    <Button onClick={() => runTraversal("preorder")}>Preorder</Button>
+                    <Button onClick={() => runTraversal("inorder")}>Inorder</Button>
+                    <Button onClick={() => runTraversal("postorder")}>Postorder</Button>
+                  </div>
+                )}
+              ]}
+          />
         </div>
       </div>
     </div>

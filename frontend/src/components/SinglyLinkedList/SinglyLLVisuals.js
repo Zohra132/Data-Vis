@@ -4,7 +4,7 @@ import ZoomControls from "../ZoomControls";
 const SinglyLLVisual = ({ list = [], listSize, itemWidth = 80, showTail }) => {
   return (
     <ZoomControls>
-    <div className="flex justify-center my-[10%]">
+    <div className="flex justify-center my-16">
       <div className="flex flex-row items-center justify-center relative ">
         {list.map((item, idx) => (
           <React.Fragment key={idx}>

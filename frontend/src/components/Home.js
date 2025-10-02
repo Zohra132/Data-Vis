@@ -10,7 +10,7 @@ const PurpleButton = ({to, children}) => {
   return (
     <Link 
         to={to}
-        className="bg-[#052757] border border-[2px] border-[#0B4196] h-24 w-60 text-[#E1EBF7] font-mono font-bold py-4 px-6 rounded-lg text-center 
+        className="bg-[#052757] border-[2px] border-[#0B4196] h-24 w-60 text-[#E1EBF7] font-mono font-bold py-4 px-6 rounded-lg text-center 
         hover:bg-[#041B3B] hover:border-[#052757] transition shadow-xl hover:-translate-y-1 flex justify-center items-center
         hover:[box-shadow:_0_0_10px_#236FE8,_0_0_20px_#236FE8,_0_0_40px_#236FE8]"
     >
@@ -31,7 +31,7 @@ function Home() {
       </h1>
     */}
       <h1
-        className="jetbrains-mono text-6xl  mb-4
+        className="jetbrains-mono text-6xl  mb-4 text-center 
                   text-blue-400 [text-shadow:0_0_25px_rgba(37,99,235,1),0_0_50px_rgba(37,99,235,0.8)]
                   cursor-pointer
                   
@@ -39,7 +39,7 @@ function Home() {
                   hover:[text-shadow:0_0_25px_rgba(29,78,216,1),0_0_50px_rgba(29,78,216,0.8)]
                   "
       >
-        Data Structure Visualiser
+        Data Structure & Algorithms <br /> Visualiser
   </h1>
       <p className="jetbrains-mono text-lg font-bold text-gray-300 mb-8 text-center max-w-xl ">
         Explore and interact with different data structures with clear visualisations and explanations.
@@ -94,6 +94,7 @@ function Home() {
             </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <PurpleButton to="/BubbleSort">Bubble Sort</PurpleButton>
+            <PurpleButton to="/QuickSort">Quick Sort</PurpleButton>
           </div>
         </div>
 

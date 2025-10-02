@@ -6,7 +6,8 @@ import DataStructureControls from "../DataStructureControls";
 import ListVisual from "./ListVisuals";
 import Button from "../Button";
 import { explain } from "../../utils/api";
-
+import SlidingTabs from "../SlidingTab";
+import HistoryLog from "../HistoryLog";
 
 const List = () => {
   const [list, setList] = useState([]);
@@ -20,9 +21,16 @@ const List = () => {
   const [insertValue, setInsertValue] = useState("");
   const [removeIndex, setRemoveIndex] = useState("");
   const [accessIndex, setAccessIndex] = useState("");
+  const [history, setHistory] = useState([]);
+  const [activeView, setActiveView] = useState("explanation");
 
 
-
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   const itemWidth = Math.min(80, Math.floor(1000 / listSize));
 
@@ -48,6 +56,7 @@ const List = () => {
     setList(newList);
     setInput("");
     setCurrentOperation("append");
+    addHistory("Insert at end", input);
     await explainStep("append", input, list);
   };
 
@@ -83,7 +92,7 @@ const List = () => {
     setInput("");
     setInsertIndex("");
     setCurrentOperation("insert");
-  
+    addHistory("Insert at index", insertValue, insertIndex);
     await explainStep("insert", insertValue, list, {
       insertIndex,
       listLength: newList.length,
@@ -115,6 +124,7 @@ const List = () => {
     newList.splice(removeIndex, 1);
     setList(newList);
     setCurrentOperation("remove");
+    addHistory("Remove at index", value, removeIndex);
     await explainStep("remove", value, list,
     {
       removeIndex,
@@ -136,6 +146,7 @@ const List = () => {
     }
     const value = list[accessIndex];
     setCurrentOperation("access");
+    addHistory("Access at index", value, accessIndex);
     await explainStep("access", accessIndex, list);
     return;
   };
@@ -143,6 +154,7 @@ const List = () => {
   const handleClear = async () => {
     setList([]);
     setCurrentOperation("clear");
+    addHistory("Clear array");
     await explainStep("clear", null, list
     );
   };
@@ -188,10 +200,16 @@ const List = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
+
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">List</h2>
-      <p className="text-lg">
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">List</h2>
+      <p className="text-md">
       Fixed-size, indexed structure – stores elements in contiguous memory for fast access by position.
       </p>
   
@@ -203,78 +221,92 @@ const List = () => {
           itemWidth={itemWidth}
         />
 
-        {/*  Exaplanation, code display and controls*/}
-        <div>
-          <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
-            <AIExplanation 
-                explanation={explanation}
+        <div className="grid grid-cols-2 gap-6 my-8">
+          {/* Column 1 */}
+          <div>
+            <SlidingTabs
+              tabs={tabs}
+              activeTab={activeView}
+              onChange={setActiveView}
             />
-            <CodeDisplay 
+          
+
+            <div className="h-full border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+              {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+              {activeView === "code" && (
+              <CodeDisplay
                 language={language}
                 setLanguage={setLanguage}
                 codeSnippet={codeSnippet}
-            />
+              />
+              )}
+              {activeView === "history" && <HistoryLog history={history} />}
+            </div>
           </div>
-          <DataStructureControls
-            input={input}
-            setInput={setInput}
-            onPrimaryClick={handleAddToEnd}
-            primaryLabel="Insert at End"
-            //onSecondaryClick={handleRemoveAtIndex}
-            //secondaryLabel="Remove At Index"
-            onClearClick={handleClear}
-            //onPeekClick={handleAccess}
-            size={listSize}        
-            onResize={handleResize}
-            extraButtons={[
-              {
-                element: (
-                  <div className="flex flex-col gap-4 items-center mb-2 ">
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        placeholder="Value"
-                        value={insertValue}
-                        onChange={(e) => setInsertValue(e.target.value)}
-                        className="border border-grey rounded w-24 px-2 py-3"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Index"
-                        value={insertIndex}
-                        onChange={(e) => setInsertIndex(e.target.value)}
-                        className="border border-grey rounded w-24 px-2 py-3"
-                      />
-                      <Button onClick={handleAddAtIndex}>Insert at Index</Button>
-                    </div>
 
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="number"
-                        placeholder="Index"
-                        value={removeIndex}
-                        onChange={(e) => setRemoveIndex(e.target.value)}
-                        className="border border-grey rounded w-24 px-2 py-3"
-                      />
-                      <Button onClick={handleRemoveAtIndex}>Remove at Index</Button>
-                    </div>
+            {/* Column 2 */}
+            <div>
+              <DataStructureControls
+                input={input}
+                setInput={setInput}
+                onPrimaryClick={handleAddToEnd}
+                primaryLabel="Insert at End"
+                //onSecondaryClick={handleRemoveAtIndex}
+                //secondaryLabel="Remove At Index"
+                onClearClick={handleClear}
+                //onPeekClick={handleAccess}
+                size={listSize}        
+                onResize={handleResize}
+                extraButtons={[
+                  {
+                    element: (
+                      <div className="flex flex-col gap-4 items-center mb-2 ">
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="text"
+                            placeholder="Value"
+                            value={insertValue}
+                            onChange={(e) => setInsertValue(e.target.value)}
+                            className="border border-grey rounded w-24 px-2 py-3"
+                          />
+                          <input
+                            type="number"
+                            placeholder="Index"
+                            value={insertIndex}
+                            onChange={(e) => setInsertIndex(e.target.value)}
+                            className="border border-grey rounded w-24 px-2 py-3"
+                          />
+                          <Button onClick={handleAddAtIndex}>Insert at Index</Button>
+                        </div>
 
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="number"
-                        placeholder="Index"
-                        value={accessIndex}
-                        onChange={(e) => setAccessIndex(e.target.value)}
-                        className="border border-grey rounded w-24 px-2 py-3"
-                      />
-                      <Button onClick={handleAccess}>Access at Index</Button>
-                    </div>
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="number"
+                            placeholder="Index"
+                            value={removeIndex}
+                            onChange={(e) => setRemoveIndex(e.target.value)}
+                            className="border border-grey rounded w-24 px-2 py-3"
+                          />
+                          <Button onClick={handleRemoveAtIndex}>Remove at Index</Button>
+                        </div>
 
-                  </div>
-                ),
-              }
-            ]}
-          />    
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="number"
+                            placeholder="Index"
+                            value={accessIndex}
+                            onChange={(e) => setAccessIndex(e.target.value)}
+                            className="border border-grey rounded w-24 px-2 py-3"
+                          />
+                          <Button onClick={handleAccess}>Access at Index</Button>
+                        </div>
+
+                      </div>
+                    ),
+                  }
+                ]}
+              />  
+          </div>  
         </div>
       </div>
     </div>

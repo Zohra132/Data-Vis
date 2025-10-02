@@ -4,7 +4,9 @@ import AIExplanation from "../AIExplanation";
 import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import LLStackVisuals from "./LLStackVisuals";
+import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 
 const LLStack = () => {
   const [stack, setStack] = useState([]); // Representing linked list stack as array of nodes for simplicity
@@ -15,6 +17,15 @@ const LLStack = () => {
   const [language, setLanguage] = useState("Python");
   const [codeSnippet, setCodeSnippet] = useState("");
   const [currentOperation, setCurrentOperation] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [activeView, setActiveView] = useState("explanation");
+
+  const addHistory = (action, value = null, index = null) => {
+    setHistory((prev) => [
+      ...prev,
+      { action, value, index },
+    ]);
+  };
 
   const handleResize = (newSize) => {
     setStackSize(newSize);
@@ -40,6 +51,7 @@ const LLStack = () => {
     const newNode = { value: input, next: stack[0] || null };
     const newStack = [...stack, newNode];
     setStack(newStack);
+    addHistory("Push", input);
     setInput("");
     setCurrentOperation("push");
     await explainStep("push", input, newStack);
@@ -50,18 +62,21 @@ const LLStack = () => {
     const popped = stack[0].value;
     const newStack = stack.slice(1);
     setStack(newStack);
+    addHistory("Pop", popped);
     setCurrentOperation("pop");
     await explainStep("pop", popped, newStack);
   };
 
   const handleClear = async () => {
     setStack([]);
+    addHistory("Clear");
     setCurrentOperation("clear");
     await explainStep("clear", null, []);
   };
 
   const handleTop = async () => {
     const topNode = stack[0];
+    addHistory("Peek", topNode);
     setCurrentOperation("top");
     await explainStep("top", topNode?.value ?? null, stack);
   };
@@ -103,27 +118,51 @@ const LLStack = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
+
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">Stack - Linked List Implementation</h2>
-      <p className="text-lg">LIFO (Last In, First Out) principle - insertions and removals from the same end.</p>
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">Stack - Linked List Implementation</h2>
+      <p className="text-md">LIFO (Last In, First Out) principle - insertions and removals from the same end.</p>
 
-      <div className="grid grid-cols-2 mt-5 gap-6">
-        {/* Column 1: Stack Visual */}
-        <LLStackVisuals stack={stack} />
+      <div className="grid grid-cols-[1fr_1fr_1fr] gap-6 my-8">
+        {/* Column 1 */}
+        <div className="w-full">
+          <SlidingTabs
+            tabs={tabs}
+            activeTab={activeView}
+            onChange={setActiveView}
+          />
 
-        {/* Column 2: Explanation, code, controls */}
-        <div>
-          <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
-            <AIExplanation explanation={explanation} />
-            <CodeDisplay 
+          <div className="h-[630px] border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+            {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+            {activeView === "code" && (
+            <CodeDisplay
               language={language}
               setLanguage={setLanguage}
               codeSnippet={codeSnippet}
             />
+            )}
+            {activeView === "history" && <HistoryLog history={history} />}
           </div>
+        </div>
 
-          <div className="flex justify-center">
+        {/* Column 2*/}
+        <div>
+          <LLStackVisuals 
+            stack={stack} 
+            stackSize={stackSize} 
+            isFixedSize={isFixedSize}
+            currentOperation={currentOperation}
+          />
+        </div>
+
+        {/* Column 3*/}
+        <div>
             <DataStructureControls
               input={input}
               setInput={setInput}
@@ -140,7 +179,6 @@ const LLStack = () => {
               showSizeControls={false}
             />
           </div>
-        </div>
       </div>
     </div>
   );

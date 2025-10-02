@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function SlidingTabs({ tabs, activeTab, onChange }) {
   return (
     <div>
-      <div className="relative flex bg-black/25 rounded-xl w-full h-16 mx-auto border border-black overflow-hidden">
+      <div className="relative flex bg-black/25 rounded-xl w-full h-16 border border-black overflow-hidden">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -20,16 +20,15 @@ export default function SlidingTabs({ tabs, activeTab, onChange }) {
         {/* Sliding Pill */}
         <motion.div
           layoutId="active-pill"
-          className="absolute top-1 bottom-1 rounded-lg bg-blue-500 shadow"
+          className="absolute top-1 bottom-1 rounded-lg bg-[#102c87] shadow"
           initial={false}
           animate={{
             x: `${tabs.findIndex((t) => t.key === activeTab) * 100}%`,
           }}
-          transition={{ type: "spring", stiffness: 200, damping: 30 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
           style={{
-            width: `calc(${100 / tabs.length}% - 0.5rem)`, // smaller than track
-            marginLeft: "0.25rem",
-            marginRight: "0.25rem",
+            width: `calc(${100 / tabs.length}%)`, 
+            
           }}
         />
       </div>

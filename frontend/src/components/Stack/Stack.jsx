@@ -6,6 +6,7 @@ import DataStructureControls from "../DataStructureControls";
 import StackVisuals from "./StackVisuals";
 import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 
 
 const Stack = () => {
@@ -19,6 +20,7 @@ const Stack = () => {
   const [codeSnippet, setCodeSnippet] = useState("");
   const [currentOperation, setCurrentOperation] = useState(null);
   const [history, setHistory] = useState([]);
+  const [activeView, setActiveView] = useState("explanation");
 
   const addHistory = (action, value = null, index = null) => {
     setHistory((prev) => [
@@ -124,52 +126,67 @@ const Stack = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
+  
+
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">Stack</h2>
-      <p className="text-lg"> LIFO (Last In, First Out) principle - insertions and removals from the same end. </p>
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">Stack</h2>
+      <p className="text-md"> LIFO (Last In, First Out) principle - insertions and removals from the same end. </p>
 
-      <div className="grid grid-cols-2 gap-6 my-8"> 
+      <div className="grid grid-cols-[1fr_1fr_1fr] gap-6 my-8"> 
+      {/* Column 1 */}
+      <div className="w-full">
+        <SlidingTabs
+          tabs={tabs}
+          activeTab={activeView}
+          onChange={setActiveView}
+        />
 
-        {/* Column 1: Stack Visual*/}
+        <div className="h-[630px] border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+          {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+          {activeView === "code" && (
+          <CodeDisplay
+            language={language}
+            setLanguage={setLanguage}
+            codeSnippet={codeSnippet}
+          />
+          )}
+          {activeView === "history" && <HistoryLog history={history} />}
+        </div>
+      </div>
+
+      {/* Column 2*/}
+      <div>
         <StackVisuals 
           stack={stack} 
           stackSize={stackSize} 
           isFixedSize={isFixedSize}
           currentOperation={currentOperation}
         />
+      </div>
 
-        {/*Column 2: Exaplanation, code displa, controls and operation history */}
-        <div>
-          <div className="grid grid-cols-2 gap-3 mb-3 min-h-[200px]">
-            <AIExplanation 
-              explanation={explanation}
-            />
-            <CodeDisplay 
-              language={language}
-              setLanguage={setLanguage}
-              codeSnippet={codeSnippet}
-            />
-          </div>
-          <div>
-            <DataStructureControls
-              input={input}
-              setInput={setInput}
-              onPrimaryClick={handlePush}
-              primaryLabel="Push"
-              onSecondaryClick={handlePop}
-              secondaryLabel="Pop"
-              onClearClick={handleClear}
-              onPeekClick={handleTop}
-              isFixedSize={isFixedSize}
-              setIsFixedSize={setIsFixedSize}
-              size={stackSize}
-              onResize={handleResize}
-            />  
-          </div>
-          <div className="my-3">
-            <HistoryLog history={history} />
-          </div>
+      
+      {/* Column 3 */}
+      <div>
+          <DataStructureControls
+            input={input}
+            setInput={setInput}
+            onPrimaryClick={handlePush}
+            primaryLabel="Push"
+            onSecondaryClick={handlePop}
+            secondaryLabel="Pop"
+            onClearClick={handleClear}
+            onPeekClick={handleTop}
+            isFixedSize={isFixedSize}
+            setIsFixedSize={setIsFixedSize}
+            size={stackSize}
+            onResize={handleResize}
+          />  
         </div>
       </div>
     </div>

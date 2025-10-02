@@ -7,6 +7,7 @@ import SinglyLLVisual from "./SinglyLLVisuals";
 import Button from "../Button";
 import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 
 const SinglyLinkedList = () => {
   const [list, setList] = useState([]);
@@ -24,6 +25,7 @@ const SinglyLinkedList = () => {
   const [removeFrontValue, setRemoveFrontValue] = useState("");
   const [showTail, setShowTail] = useState(false);
   const [history, setHistory] = useState([]);
+  const [activeView, setActiveView] = useState("explanation");
 
   const itemWidth = Math.min(80, Math.floor(1000 / listSize));
 
@@ -195,11 +197,16 @@ const SinglyLinkedList = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
 
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">Singly Linked List</h2>
-      <p className="text-lg">
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">Singly Linked List</h2>
+      <p className="text-md">
       Dynamic, sequential structure – stores elements as nodes linked by pointers, 
       allowing efficient insertions and deletions without contiguous memory but with slower access by position.
       </p>
@@ -213,110 +220,116 @@ const SinglyLinkedList = () => {
           showTail={showTail}
         />
 
-        {/*  Exaplanation, code display and controls*/}
-        <div>
-          <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
-            <AIExplanation 
-                explanation={explanation}
+        <div className="grid grid-cols-2 gap-6 my-8">
+          <div>
+            <SlidingTabs
+              tabs={tabs}
+              activeTab={activeView}
+              onChange={setActiveView}
             />
-            <CodeDisplay 
+            
+
+            <div className="h-full border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+              {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+              {activeView === "code" && (
+              <CodeDisplay
                 language={language}
                 setLanguage={setLanguage}
                 codeSnippet={codeSnippet}
-            />
+              />
+              )}
+              {activeView === "history" && <HistoryLog history={history} />}
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-          <DataStructureControls
-            input={input}
-            setInput={setInput}
-            onPrimaryClick={handleAddToEnd}
-            primaryLabel="Insert at End"
-            //onSecondaryClick={handleRemoveAtIndex}
-            //secondaryLabel="Remove At Index"
-            /*onClearClick={handleClear}*/
-            //onPeekClick={handleAccess}
-            size={listSize}        
-            /*onResize={handleResize}*/
-            showSizeControls={false}
-            extraButtons={[
-              {
-                element: (
-                  <div className="flex flex-col gap-5 items-center mb-2">
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        placeholder="Value"
-                        value={insertFrontValue}
-                        onChange={(e) => setInsertFrontValue(e.target.value)}
-                        className="border border-grey rounded px-2 py-3"
-                      />
-                      <Button onClick={handleAddAtFront}>Insert at Front</Button>
-                    </div>
 
-
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        placeholder="Value"
-                        value={insertValue}
-                        onChange={(e) => setInsertValue(e.target.value)}
-                        className="border border-grey w-24 rounded px-2 py-3"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Index"
-                        value={insertIndex}
-                        onChange={(e) => setInsertIndex(e.target.value)}
-                        className="border border-grey rounded w-24 px-2 py-3"
-                      />
-                      <Button onClick={handleAddAtIndex}>Insert at Index</Button>
-                    </div>
-
-                    
-                    <div className="flex gap-2 items-center">
-                      <Button onClick={handleRemoveEnd}>Remove End</Button>
-                    </div>
-
-                    <div className="flex gap-2 items-center">
-                      <Button onClick={handleRemoveFront}>Remove Front</Button>
-                    </div>
-
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        placeholder="Index"
-                        value={removeIndex}
-                        onChange={(e) => setRemoveIndex(e.target.value)}
-                        className="border border-grey rounded px-2 py-3"
-                      />
-                      <Button onClick={handleRemoveIndex}>Remove Index</Button>
-                    </div>
-
-                    <div>
-                      <span className="mr-2">Hide Tail</span>
-                        <button
-                          onClick={() => setShowTail(!showTail)}
-                          className={`relative inline-flex h-6 w-12 items-center border border-gray-400 bg-[#fae0e4] rounded-full transition-colors duration-300 
-                            ${!showTail ? "bg-gray-300" : "bg-[#fae0e4]"}`}
-                        >
-                          <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform duration-300
-                              ${showTail ? "translate-x-6" : "translate-x-1"}`}
+          <div>
+            <DataStructureControls
+              input={input}
+              setInput={setInput}
+              onPrimaryClick={handleAddToEnd}
+              primaryLabel="Insert at End"
+              //onSecondaryClick={handleRemoveAtIndex}
+              //secondaryLabel="Remove At Index"
+              /*onClearClick={handleClear}*/
+              //onPeekClick={handleAccess}
+              size={listSize}        
+              /*onResize={handleResize}*/
+              showSizeControls={false}
+              extraButtons={[
+                {
+                  element: (
+                    <div className="flex flex-col gap-5 items-center mb-2">
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          placeholder="Value"
+                          value={insertFrontValue}
+                          onChange={(e) => setInsertFrontValue(e.target.value)}
+                          className="border border-grey rounded px-2 py-3"
                         />
-                        </button>
-                      <span className="ml-2">Show Tail</span>
-                        
+                        <Button onClick={handleAddAtFront}>Insert at Front</Button>
+                      </div>
+
+
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          placeholder="Value"
+                          value={insertValue}
+                          onChange={(e) => setInsertValue(e.target.value)}
+                          className="border border-grey w-24 rounded px-2 py-3"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Index"
+                          value={insertIndex}
+                          onChange={(e) => setInsertIndex(e.target.value)}
+                          className="border border-grey rounded w-24 px-2 py-3"
+                        />
+                        <Button onClick={handleAddAtIndex}>Insert at Index</Button>
+                      </div>
+
+                      
+                      <div className="flex gap-2 items-center">
+                        <Button onClick={handleRemoveEnd}>Remove End</Button>
+                      </div>
+
+                      <div className="flex gap-2 items-center">
+                        <Button onClick={handleRemoveFront}>Remove Front</Button>
+                      </div>
+
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          placeholder="Index"
+                          value={removeIndex}
+                          onChange={(e) => setRemoveIndex(e.target.value)}
+                          className="border border-grey rounded px-2 py-3"
+                        />
+                        <Button onClick={handleRemoveIndex}>Remove Index</Button>
+                      </div>
+
+                      <div>
+                        <span className="mr-2 text-white">Hide Tail</span>
+                          <button
+                            onClick={() => setShowTail(!showTail)}
+                            className={`relative inline-flex h-6 w-12 items-center border border-gray-400 bg-[#fae0e4] rounded-full transition-colors duration-300 
+                              ${!showTail ? "bg-gray-300" : "bg-[#fae0e4]"}`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform duration-300
+                                ${showTail ? "translate-x-6" : "translate-x-1"}`}
+                          />
+                          </button>
+                        <span className="ml-2 text-white">Show Tail</span>
+                          
+                      </div>
                     </div>
-
-                  
-
-                  </div>
-                ),
-              }
-            ]}
-          />    
-          <HistoryLog history={history} />
-        </div>
+                  ),
+                }
+              ]}
+            />    
+          </div>
         </div>
       </div>
     </div>

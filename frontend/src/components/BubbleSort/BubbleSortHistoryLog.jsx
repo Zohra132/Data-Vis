@@ -2,10 +2,10 @@ import React from "react";
 
 const BubbleSortHistoryLog = ({ history }) => {
   return (
-    <div className="border rounded-lg bg-white shadow-md p-3 text-left h-full overflow-y-auto">
-      <h3 className="text-lg text-center font-semibold mb-2 text-black">Bubble Sort History</h3>
+    <div className="w-full text-left border border-black rounded-lg bg-black/25 shadow-md h-full p-3 overflow-y-auto">
+      <h3 className="text-lg text-center font-semibold mb-2 text-gray-300">Bubble Sort History</h3>
       {history.length === 0 ? (
-        <p className="text-gray-500 italic">No operations yet.</p>
+        <p className="text-gray-500 italic text-center">No operations yet.</p>
       ) : (
         <ul className="space-y-1 text-sm">
           {history
@@ -26,7 +26,7 @@ const BubbleSortHistoryLog = ({ history }) => {
               }
 
               return (
-                <li key={idx} className="border-b pb-1">
+                <li key={idx} className="border-b pb-1 text-gray-300">
                   <span className="font-bold">{item.action}</span>
                   {description && (
                     <> → <span className="text-blue-600">{description}</span></>

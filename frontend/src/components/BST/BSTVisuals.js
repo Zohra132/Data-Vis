@@ -103,7 +103,7 @@ const BSTVisuals = ({ root, currentOperation, traversalOrder = [] }) => {
     <ZoomControls>
       <div
         ref={containerRef}
-        className="relative p-4 rounded-lg min-h-[500px] flex justify-center items-start"
+        className="relative p-4 rounded-lg h-[550px] min-w-[300px] my-20 flex justify-center items-start"
       >
         <div className="relative z-10 w-full flex justify-center">
           {!root ? (

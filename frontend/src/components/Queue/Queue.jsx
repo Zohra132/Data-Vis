@@ -6,6 +6,7 @@ import QueueVisual from "./QueueVisual";
 import DataStructureControls from "../DataStructureControls"; 
 import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 
 const Queue = () => {
   const [queue, setQueue] = useState([]);
@@ -17,7 +18,7 @@ const Queue = () => {
   const [codeSnippet, setCodeSnippet] = useState("");
   const [currentOperation, setCurrentOperation] = useState(null);
   const [history, setHistory] = useState([]);
-
+  const [activeView, setActiveView] = useState("explanation");
   const itemWidth = Math.min(80, Math.floor(1000 / queueSize));
 
   const addHistory = (action, value = null, index = null) => {
@@ -125,10 +126,17 @@ const Queue = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
+  
+
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">Queue - Array Implementation</h2>
-      <p className="text-lg">
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">Queue - Array Implementation</h2>
+      <p className="text-md">
         FIFO (First In, First Out) principle - Elements are added to the rear and removed from the front, like a waiting line.
       </p>
   
@@ -141,7 +149,7 @@ const Queue = () => {
           itemWidth={itemWidth}
         />
 
-        {/*  Exaplanation, code display and controls*/}
+        {/*  Exaplanation, code display and controls
         <div>
           <div className="grid grid-cols-2 gap-3 my-8 min-h-[200px]">
             <AIExplanation 
@@ -171,6 +179,49 @@ const Queue = () => {
             <HistoryLog history={history} />
           </div>
         </div>
+        */}
+         <div className="grid grid-cols-2 gap-6 my-8">
+            {/* col 1 */}
+            <div>
+              <SlidingTabs
+                tabs={tabs}
+                activeTab={activeView}
+                onChange={setActiveView}
+              />
+            
+
+              <div className="h-full border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+                {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+                {activeView === "code" && (
+                <CodeDisplay
+                  language={language}
+                  setLanguage={setLanguage}
+                  codeSnippet={codeSnippet}
+                />
+                )}
+                {activeView === "history" && <HistoryLog history={history} />}
+              </div>
+            </div>  
+
+            {/* col 2 */}
+            <div>
+            <DataStructureControls
+              input={input}
+              setInput={setInput}
+              onPrimaryClick={handleEnqueue}
+              primaryLabel="Enqueue"
+              onSecondaryClick={handleDequeue}
+              secondaryLabel="Dequeue"
+              onClearClick={handleClear}
+              onPeekClick={handlePeek}
+              isFixedSize={isFixedSize}
+              setIsFixedSize={setIsFixedSize}
+              size={queueSize}        
+              onResize={handleResize}
+            />    
+          </div>
+         </div>
+
       </div>
     </div>
   );

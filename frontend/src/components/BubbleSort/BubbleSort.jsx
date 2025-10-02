@@ -17,7 +17,6 @@ const BubbleSort = () => {
       { action, indices, arraySnapshot: [...arraySnapshot] },
     ]);
   };
-  
 
   const parseInputArray = (rawInput = "") => {
     return rawInput
@@ -63,38 +62,46 @@ const BubbleSort = () => {
     );
   };
 
-
   return (
-    <div className="grid grid-cols-2 gap-6 mt-10">
-      <div className="text-center">
-        <h2 className="text-3xl font-semibold mb-4">Bubble Sort</h2>
-        <input
-          type="text"
-          placeholder="Insert values separated with commas"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="border w-1/2 border-grey rounded px-2 py-3 text-black"
-        />
-        <div className="space-y-4 mt-6">
-          {sortedRows.map((row, i) => (
-            <BubbleSortVisuals
-              key={i}
-              array={row}
-              currentIndices={i === sortedRows.length - 1 ? currentIndices : []}
-              sortedBoundary={i === sortedRows.length - 1 ? sortedBoundary : row.length - i}
-            />
-          ))}
-        </div>
-        <button
-          onClick={startSort}
-          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg shadow"
-        >
-          Start Sorting
-        </button>
-      </div>
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">Bubble Sort</h2>
+      <p className="text-md">
+      A comparison-based sorting algorithm that iteratively compares and swaps adjacent elements to arrange all elements in a specified order.
+      </p>
 
-      <div className="h-[600px] overflow-y-auto p-3 mr-[40px]">
-        <BubbleSortHistoryLog history={history}/>
+      <div className="grid grid-cols-2 mt-6">
+        {/* Column 1 */}
+        <div>
+          <input
+            type="text"
+            placeholder="Insert values separated with commas"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="border w-1/2 border-grey rounded px-2 py-3 text-black"
+          />
+          <div className="space-y-4 mt-6">
+            {sortedRows.map((row, i) => (
+              <BubbleSortVisuals
+                key={i}
+                array={row}
+                currentIndices={i === sortedRows.length - 1 ? currentIndices : []}
+                sortedBoundary={i === sortedRows.length - 1 ? sortedBoundary : row.length - i}
+              />
+            ))}
+          </div>
+          <button
+            onClick={startSort}
+            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg shadow"
+          >
+            Start Sorting
+          </button>
+        </div>
+
+        {/* Column 2 */}
+        <div className="h-[600px] w-full overflow-y-auto mr-[40px]">
+          <BubbleSortHistoryLog history={history}/>
+        </div>
+
       </div>
     </div>
   );

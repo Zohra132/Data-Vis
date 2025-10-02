@@ -6,6 +6,7 @@ import CodeDisplay from "../CodeDisplay";
 import DataStructureControls from "../DataStructureControls";
 import HistoryLog from "../HistoryLog";
 import { explain } from "../../utils/api";
+import SlidingTabs from "../SlidingTab";
 
 const Heap = () => {
   const [heapType, setHeapType] = useState("min");
@@ -18,6 +19,7 @@ const Heap = () => {
   const [swappingIndices, setSwappingIndices] = useState([]);
   const [insertedIndex, setInsertedIndex] = useState(null);
   const [history, setHistory] = useState([]);
+  const [activeView, setActiveView] = useState("explanation");
 
   const addHistory = (action, value = null, index = null) => {
     setHistory((prev) => [
@@ -172,12 +174,19 @@ const Heap = () => {
     }
   };
 
+  const tabs = [
+    { key: "explanation", label: "AI Explanation" },
+    { key: "code", label: "Code" },
+    { key: "history", label: "History Log" },
+    ];
+  
+
   return (
-    <div className="text-center my-8 mx-12 min-w-[700px]">
-      <h2 className="text-center text-5xl font-semibold mb-4">
+    <div className="text-center my-8 mx-12 min-w-[800px]">
+      <h2 className="text-center text-4xl font-semibold mb-4">
         {heapType === "min" ? "Min Heap" : "Max Heap"}
       </h2>
-      <p className="text-lg">
+      <p className="text-md">
         {heapType === "min"
           ? "The smallest element is always at the root."
           : "The largest element is always at the root."}
@@ -190,7 +199,28 @@ const Heap = () => {
         Toggle to {heapType === "min" ? "Max Heap" : "Min Heap"}
       </button>
 
-      <div className="grid grid-cols-2 mt-5 gap-6">
+      <div className="grid grid-cols-[1fr_1fr_1fr] gap-6 my-8"> 
+        {/* Column 1 */}
+        <div className="w-full">
+          <SlidingTabs
+            tabs={tabs}
+            activeTab={activeView}
+            onChange={setActiveView}
+          />
+          <div className="h-[630px] border border-black rounded-lg p-4 bg-black/25 shadow mt-4">
+            {activeView === "explanation" && <AIExplanation explanation={explanation} />}
+            {activeView === "code" && (
+            <CodeDisplay
+              language={language}
+              setLanguage={setLanguage}
+              codeSnippet={codeSnippet}
+            />
+            )}
+            {activeView === "history" && <HistoryLog history={history} />}
+          </div>
+        </div>
+
+        {/* Column 2 */}
         <div>
           <HeapVisuals
             heap={heap}
@@ -198,34 +228,22 @@ const Heap = () => {
             swappingIndices={swappingIndices}
             insertedIndex={insertedIndex}
           />
-          <div className="my-3">
-            <DataStructureControls 
-              input={input}
-              setInput={setInput}
-              onPrimaryClick={handleInsert}
-              primaryLabel="Insert"
-              onSecondaryClick={handleExtract}
-              secondaryLabel="Extract Root"
-              onClearClick={handleClear}
-              hideSizeControl={true}
-              hideFixedToggle={true}
-            />
-          </div>
-        </div>
-        <div>
-          <div className="grid grid-cols-2 gap-3 mb-3 min-h-[300px]">
-            <AIExplanation explanation={explanation} />
-            <CodeDisplay
-              language={language}
-              setLanguage={setLanguage}
-              codeSnippet={codeSnippet}
-            />
-          </div>
-          <div className="h-[500px]">
-            <HistoryLog history={history}  />
-          </div>
         </div>
 
+        {/* Column 3*/} 
+        <div>
+          <DataStructureControls 
+            input={input}
+            setInput={setInput}
+            onPrimaryClick={handleInsert}
+            primaryLabel="Insert"
+            onSecondaryClick={handleExtract}
+            secondaryLabel="Extract Root"
+            onClearClick={handleClear}
+            hideSizeControl={true}
+            hideFixedToggle={true}
+          />
+        </div>
       </div>
     </div>
   );

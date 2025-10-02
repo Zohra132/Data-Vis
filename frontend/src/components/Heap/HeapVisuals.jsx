@@ -29,7 +29,7 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
     const right = 2 * index + 2;
 
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center h-full">
         <AnimatePresence mode="popLayout">
           <motion.div
             data-heap-index={index}
@@ -68,10 +68,10 @@ const HeapVisuals = ({ heap, currentOperation, swappingIndices, insertedIndex })
     <ZoomControls>
       <div 
         ref={containerRef} 
-        className="relative p-4 rounded-lg min-h-[500px] flex justify-center items-start"
+        className="relative p-4 rounded-lg min-h-[550px] min-w-[300px] my-20 flex justify-center items-start"
       >
 
-      <div className="relative z-10 w-full flex justify-center">
+      <div className="relative z-10 w-full h-full flex justify-center">
         {heap.length === 0 ? (
           <motion.p
             initial={{ opacity: 0 }}

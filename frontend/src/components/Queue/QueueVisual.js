@@ -4,7 +4,7 @@ import ZoomControls from "../ZoomControls";
 const QueueVisual = ({ queue, queueSize, isFixedSize, itemWidth = 80 }) => {
   return (
     <ZoomControls>
-    <div className="flex justify-center my-[10%]">
+    <div className="flex justify-center my-16">
       {isFixedSize ? (
         <div className="flex flex-row items-center justify-center w-full">
           <div className="text-sm font-semibold mr-3 mt-4">Front</div>
