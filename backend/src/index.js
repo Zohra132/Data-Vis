@@ -6,17 +6,13 @@ import datasetRoutes from "./routes/datasets.js";
 import explainRoutes from "./routes/explain.js";
 
 dotenv.config(); //this is to let the backend use the api key
+console.log("ENV — OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "SET" : "NOT SET");
 const app = express();
-/*
+
+/*app.use(cors());*/
+
 app.use(cors({
-  origin: "http://localhost:3001", // frontend origin
-  methods: ["GET","POST","PUT","DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-}));
-*/
-app.use(cors({
-  origin: "https://dsva-visualiser.vercel.app"
+  origin: "https://dsva-visualiser.vercel.app",
 }));
 app.use(express.json());
 
