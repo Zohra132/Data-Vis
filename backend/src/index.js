@@ -15,7 +15,9 @@ app.use(cors({
   credentials: true,
 }));
 */
-app.use(cors());
+app.use(cors({
+  origin: "https://dsva-visualiser.vercel.app"
+}));
 app.use(express.json());
 
 //Routes
