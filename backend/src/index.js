@@ -11,9 +11,23 @@ const app = express();
 
 /*app.use(cors());*/
 
+const allowedOrigins = [
+  "https://dsva-visualiser.vercel.app",
+  "https://dsa-visualiser-git-main-zohra132s-projects.vercel.app",
+  "https://dsa-visualiser-p030f0eku-zohra132s-projects.vercel.app",
+  "https://dsa-visualiser-zohra132s-projects.vercel.app",
+  "http://localhost:3000"
+]
 app.use(cors({
-  origin: "https://dsva-visualiser.vercel.app",
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed for this origin"));
+    }
+  },
 }));
+
 app.use(express.json());
 
 //Routes
