@@ -1,6 +1,6 @@
 /**frontend/utils/api.js */
 //const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
-const API_URL = "https://data-vis-production.up.railway.app";
+const API_URL = process.env.NEXT_PUBLIC_API_URL 
 
 // Register a new user
 export async function register(username, password) {
